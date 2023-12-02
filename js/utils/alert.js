@@ -2,13 +2,17 @@ const alert = document.querySelector(".alert-info");
 
 function debounce(callback) {
   let timeout;
-  return (...args) => {
+  return () => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-      callback(...args);
-    }, 2500);
+      callback();
+    }, 3000);
   };
 }
+
+const debounceAlert = debounce(() => {
+  alert.classList.add("d-none");
+});
 
 function alertInfo(msg, type) {
   removeAlertWait();
@@ -27,10 +31,7 @@ function alertInfo(msg, type) {
   setTimeout(() => {
     alert.removeChild(div);
   }, 2500);
-  const lastAlert = debounce(() => {
-    alert.classList.add("d-none");
-  });
-
+  debounceAlert();
   // "alert-success"
   // "alert-danger"
 }

@@ -105,17 +105,22 @@ cartList.addEventListener("click", (e) => {
 
 discardAllBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  if (cartData.length === 0) {
+    alertInfo("購物車已經是空的了", "alert-danger");
+    // debounceAlert();
+    return;
+  }
   alertWait("正為您處理購物車");
   axios
     .delete(cartsUrl)
     .then((delRes) => {
       // console.log(delRes.data);
-      alertInfo(`已清空購物車`, "alert-success");
+      alertInfo("已清空購物車", "alert-success");
       getCartData();
     })
     .catch((err) => {
       // console.log(err);
-      alertInfo(`請稍後再試`, "alert-danger");
+      alertInfo("請稍後再試", "alert-danger");
     });
 });
 

@@ -50,14 +50,17 @@ function rednerOrderList(dataArray) {
             </td>
             <td>${orderTime}</td>
             <td class="orderStatus">
-                <a href="#" data-target="${item.id}" >${
-      item.paid ? "已處理" : "未處理"
-    }</a>
+                <a href="#" data-target="${item.id}">
+                  ${item.paid ? "已處理" : "未處理"}
+                </a>
             </td>
             <td>
-                <input type="button" class="delSingleOrder-Btn" data-target="${
-                  item.id
-                }" value="刪除" />
+                <input 
+                  type="button" 
+                  class="delSingleOrder-Btn"
+                  data-target="${item.id}"
+                  value="刪除"
+                 />
             </td>
         `;
     fragment.append(tr);
@@ -116,6 +119,10 @@ function deleteOrder(orderId) {
 }
 
 function deleteAllOrders() {
+  if (orderData.length === 0) {
+    alertInfo(`目前訂單已經是空的了`, "alert-danger");
+    return;
+  }
   alertWait("更新資料中請稍後");
   axios
     .delete(orderUrl, {
