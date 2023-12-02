@@ -5,7 +5,7 @@ const orderInfo = document.querySelector(".orderInfo-form");
 
 function orderInfoAlert(element) {
   element.addEventListener("change", (e) => {
-    console.dir(e.target);
+    // console.dir(e.target);
     if (e.target.value.trim() === "") {
       e.target.nextElementSibling.classList.remove("d-none");
       return;

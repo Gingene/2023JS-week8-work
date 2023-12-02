@@ -1,6 +1,4 @@
-import { token, baseUrl } from "../api/config.js";
-// import handleThousands from "../utils/handleThousands.js";
-import { alertSuccessInfo, alertDangerInfo } from "../utils/alert.js";
+import { alertInfo, alertWait } from "../utils/alert.js";
 
 import {
   productData,
@@ -27,7 +25,7 @@ getCartData();
 
 // 監聽事件
 productSelect.addEventListener("change", (e) => {
-  console.log(e.target.value);
+  // console.log(e.target.value);
   if (e.target.value === "全部") {
     renderProductList(productData);
   } else {
@@ -44,10 +42,10 @@ producList.addEventListener("click", (e) => {
     return;
   }
   const productId = e.target.dataset.target;
-  console.log(e.target.dataset.target);
+  // console.log(e.target.dataset.target);
   let num = 1;
   const findCartData = cartData.find((item) => item.product.id === productId);
-  console.log(findCartData);
+  alertWait("正為您處理訂單");
   if (findCartData) {
     axios
       .patch(cartsUrl, {
@@ -57,13 +55,13 @@ producList.addEventListener("click", (e) => {
         },
       })
       .then((patchRes) => {
-        console.log(patchRes);
-        alertSuccessInfo(`${findCartData.product.title} 數量加1`);
+        // console.log(patchRes);
+        alertInfo(`${findCartData.product.title} 數量加1`, "alert-success");
         getCartData();
       })
       .catch((err) => {
-        console.log(err);
-        alertDangerInfo("請稍後再試");
+        // console.log(err);
+        alertInfo("請稍後再試", "alert-danger");
       });
   } else {
     axios
@@ -74,13 +72,13 @@ producList.addEventListener("click", (e) => {
         },
       })
       .then((postRes) => {
-        console.log(postRes.data);
-        alertSuccessInfo("已成功加入購物車");
+        // console.log(postRes);
+        alertInfo("已成功加入購物車", "alert-success");
         getCartData();
       })
       .catch((err) => {
-        console.log(err);
-        alertDangerInfo("請稍後再試");
+        // console.log(err);
+        alertInfo("請稍後再試", "alert-danger");
       });
   }
 });
@@ -91,16 +89,17 @@ cartList.addEventListener("click", (e) => {
   if (!cartProductId) {
     return;
   }
-  console.dir(e.target);
+  alertWait("正為您處理訂單");
   axios
     .delete(cartsUrl + "/" + cartProductId)
     .then((delRes) => {
-      console.log(delRes.data);
-      alertSuccessInfo(`已刪除品項`);
+      // console.log(delRes.data);
+      alertInfo(`已刪除品項`, "alert-success");
       getCartData();
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
+      alertInfo(`請稍後再試`, "alert-danger");
     });
 });
 
@@ -109,19 +108,20 @@ discardAllBtn.addEventListener("click", (e) => {
   axios
     .delete(cartsUrl)
     .then((delRes) => {
-      console.log(delRes.data);
-      alertSuccessInfo(`已清空購物車`);
+      // console.log(delRes.data);
+      alertInfo(`已清空購物車`, "alert-success");
       getCartData();
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
+      alertInfo(`請稍後再試`, "alert-danger");
     });
 });
 
 orderInfo.addEventListener("submit", (e) => {
   e.preventDefault();
   if (cartData.length === 0) {
-    alertDangerInfo("請加入購物車");
+    alertInfo("請加入購物車");
     return;
   }
   const customerName = document.querySelector("#customerName").value;
@@ -136,15 +136,15 @@ orderInfo.addEventListener("submit", (e) => {
     customerAddress == "" ||
     customerTradeWay == ""
   ) {
-    alertDangerInfo("請勿輸入空資訊");
+    alertInfo("請勿輸入空資訊", "alert-danger");
     return;
   }
   if (!validateEmail(customerEmail)) {
-    alertDangerInfo("請填寫正確的信箱格式");
+    alertInfo("請填寫正確的信箱格式", "alert-danger");
     return;
   }
   if (!validatePhone(customerPhone)) {
-    alertDangerInfo("請填寫09開頭共10位數字");
+    alertInfo("請填寫09開頭共10位數字", "alert-danger");
     return;
   }
 
@@ -161,13 +161,13 @@ orderInfo.addEventListener("submit", (e) => {
       },
     })
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       e.target.reset();
-      alertSuccessInfo("訂單建立成功");
+      alertInfo("訂單建立成功", "alert-success");
       getCartData();
     })
     .catch((err) => {
-      console.log(err);
-      alertSuccessInfo("抱歉，請再重新操作一次");
+      // console.log(err);
+      alertInfo("很抱歉，請再重新操作一次", "alert-danger");
     });
 });

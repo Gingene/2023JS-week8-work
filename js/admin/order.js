@@ -1,12 +1,15 @@
 import { token, baseUrl2 } from "../api/config.js";
-import { alertSuccessInfo, alertDangerInfo } from "../utils/alert.js";
+import { alertInfo, alertWait } from "../utils/alert.js";
+import c3DrawPie from "./c3data.js";
 
 const orderUrl = `${baseUrl2}/orders`;
 
 const orderList = document.querySelector(".order-admin");
+const discardAllBtn = document.querySelector(".discardAllBtn");
 
 let orderData = [];
 
+alertWait("讀取資料中請稍後");
 function getOrdersData() {
   axios
     .get(orderUrl, {
@@ -15,12 +18,12 @@ function getOrdersData() {
       },
     })
     .then((res) => {
-      console.log(res.data);
+      alertInfo("資料讀取成功", "alert-success");
       orderData = res.data.orders;
       rednerOrderList(orderData);
+      c3DrawPie(orderData);
     });
 }
-getOrdersData();
 
 function rednerOrderList(dataArray) {
   const fragment = document.createDocumentFragment();
@@ -65,24 +68,9 @@ function rednerOrderList(dataArray) {
   orderList.append(fragment);
 }
 
-orderList.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (!e.target.dataset.target) {
-    return;
-  }
-  const orderId = e.target.dataset.target;
-
-  if (e.target.nodeName === "A") {
-    changeOrderStatus(orderId);
-  }
-  if (e.target.className === "delSingleOrder-Btn") {
-    deleteOrder(orderId);
-  }
-});
-
 function changeOrderStatus(orderId) {
   const result = orderData.find((item) => item.id === orderId);
-  console.log(result);
+  alertWait("更新資料中請稍後");
   axios
     .put(
       orderUrl,
@@ -99,16 +87,17 @@ function changeOrderStatus(orderId) {
       }
     )
     .then((res) => {
-      alertSuccessInfo("更新訂單付款狀態");
-      getOrdersData();
+      alertInfo("已更新訂單付款狀態", "alert-success");
+      orderData = res.data.orders;
+      rednerOrderList(orderData);
     })
     .catch((err) => {
-      console.log(err);
-      alertDangerInfo("請稍後再嘗試");
+      alertInfo("請稍後再嘗試", "alert-danger");
     });
 }
 
 function deleteOrder(orderId) {
+  alertWait("更新資料中請稍後");
   axios
     .delete(`${orderUrl}/${orderId}`, {
       headers: {
@@ -116,11 +105,40 @@ function deleteOrder(orderId) {
       },
     })
     .then((res) => {
-      alertSuccessInfo(`已成功刪除訂單編號${orderId}`);
-      getOrdersData();
+      alertInfo(`已成功刪除訂單編號${orderId}`, "alert-success");
+      orderData = res.data.orders;
+      rednerOrderList(orderData);
+      c3DrawPie(orderData);
     })
     .catch((err) => {
-      console.log(err);
-      alertDangerInfo("請稍後再嘗試");
+      alertInfo("請稍後再嘗試", "alert-danger");
     });
 }
+
+function deleteAllOrders() {
+  alertWait("更新資料中請稍後");
+  axios
+    .delete(orderUrl, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((res) => {
+      alertInfo("已成功清除全部訂單", "alert-success");
+      orderData = res.data.orders;
+      rednerOrderList(orderData);
+      c3DrawPie(orderData);
+    })
+    .catch((err) => {
+      alertInfo("請稍後再嘗試", "alert-danger");
+    });
+}
+
+export {
+  orderList,
+  discardAllBtn,
+  getOrdersData,
+  changeOrderStatus,
+  deleteOrder,
+  deleteAllOrders,
+};

@@ -15,7 +15,7 @@ function getProductData() {
       renderProductList(productData);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 }
 

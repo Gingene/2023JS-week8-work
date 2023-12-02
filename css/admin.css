@@ -906,9 +906,12 @@ body {
 }
 
 .alert {
-  position: fixed;
   padding: 1rem 1rem;
   margin-bottom: 1rem;
+}
+
+.alert-info {
+  position: fixed;
   border: 1px solid transparent;
   border-radius: 0.25rem;
   top: 2rem;
@@ -920,6 +923,12 @@ body {
 
 .alert p {
   text-align: center;
+}
+
+.alert-wait {
+  color: #055160;
+  background-color: #cff4fc;
+  border-color: #b6effb;
 }
 
 .alert-success {
