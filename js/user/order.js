@@ -4,9 +4,9 @@ const ordersUrl = `${baseUrl}/orders`;
 const orderInfo = document.querySelector(".orderInfo-form");
 
 function orderInfoAlert(element) {
-  element.addEventListener("change", (e) => {
-    // console.dir(e.target);
+  element.addEventListener("input", (e) => {
     if (e.target.value.trim() === "") {
+      e.target.focus();
       e.target.nextElementSibling.classList.remove("d-none");
       return;
     } else {

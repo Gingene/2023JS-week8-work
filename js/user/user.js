@@ -45,7 +45,7 @@ producList.addEventListener("click", (e) => {
   // console.log(e.target.dataset.target);
   let num = 1;
   const findCartData = cartData.find((item) => item.product.id === productId);
-  alertWait("正為您處理訂單");
+  alertWait("正為您處理購物車");
   if (findCartData) {
     axios
       .patch(cartsUrl, {
@@ -89,7 +89,7 @@ cartList.addEventListener("click", (e) => {
   if (!cartProductId) {
     return;
   }
-  alertWait("正為您處理訂單");
+  alertWait("正為您處理購物車");
   axios
     .delete(cartsUrl + "/" + cartProductId)
     .then((delRes) => {
@@ -105,6 +105,7 @@ cartList.addEventListener("click", (e) => {
 
 discardAllBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  alertWait("正為您處理購物車");
   axios
     .delete(cartsUrl)
     .then((delRes) => {
@@ -121,7 +122,7 @@ discardAllBtn.addEventListener("click", (e) => {
 orderInfo.addEventListener("submit", (e) => {
   e.preventDefault();
   if (cartData.length === 0) {
-    alertInfo("請加入購物車");
+    alertInfo("請加入購物車", "alert-danger");
     return;
   }
   const customerName = document.querySelector("#customerName").value;
@@ -147,7 +148,7 @@ orderInfo.addEventListener("submit", (e) => {
     alertInfo("請填寫09開頭共10位數字", "alert-danger");
     return;
   }
-
+  alertWait("正為您處理訂單");
   axios
     .post(ordersUrl, {
       data: {
