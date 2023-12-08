@@ -29,9 +29,14 @@ function renderProductList(dataList) {
               src="${item.images}"
               alt="${item.title}"
               />
-              <a href="#" class="addCardBtn" id="btn-${item.id}" data-target=${
-      item.id
-    }>加入購物車</a>
+              <a href="#" 
+              type="button"
+              class="addCardBtn" 
+              id="btn-${item.id}" 
+              data-target=${item.id}
+              >
+                加入購物車
+              </a>
               <h3>${item.title}</h3>
               <del class="originPrice">NT$${handleThousands(
                 item.origin_price

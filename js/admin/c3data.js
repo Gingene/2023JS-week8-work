@@ -9,20 +9,24 @@ function getc3Data(array) {
       }
     }
   });
-  const sortResult = Object.keys(result).map((item) => [
-    `${item}`,
-    result[item],
-  ]);
+  // const sortResult = Object.keys(result).map((item) => [
+  //   `${item}`,
+  //   result[item],
+  // ]);
 
-  sortResult.sort((a, b) => b[1] - a[1]);
+  // sortResult.sort((a, b) => b[1] - a[1]);
+
+  const sortResult = Object.entries(result).sort((a, b) => b[1] - a[1]);
+
   if (sortResult.length > 3) {
-    const otherTotal = sortResult.reduce((acc, c, index) => {
-      if (index > 2) {
-        return acc + c[1];
-      }
-      return acc;
-    }, 0);
-    sortResult.splice(3, sortResult.length - 1);
+    // const otherTotal = sortResult.reduce((acc, c, index) => {
+    //   if (index > 2) {
+    //     return acc + c[1];
+    //   }
+    //   return acc;
+    // }, 0);
+    const otherArr = sortResult.splice(3);
+    const otherTotal = otherArr.reduce((acc, c) => acc + c[1], 0);
     sortResult.push(["其他", otherTotal]);
   }
   return sortResult;

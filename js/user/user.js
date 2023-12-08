@@ -1,4 +1,4 @@
-import { alertInfo, alertWait } from "../utils/alert.js";
+import { alertInfo, loading } from "../utils/alert.js";
 
 import {
   productData,
@@ -11,7 +11,7 @@ import {
   cartsUrl,
   cartData,
   cartList,
-  discardAllBtn,
+  discartAllBtn,
   getCartData,
 } from "./carts.js";
 
@@ -45,7 +45,10 @@ producList.addEventListener("click", (e) => {
   // console.log(e.target.dataset.target);
   let num = 1;
   const findCartData = cartData.find((item) => item.product.id === productId);
-  alertWait("正為您處理購物車");
+  loading("正為您處理購物車");
+
+  e.target.classList.add("disabled");
+  discartAllBtn;
   if (findCartData) {
     axios
       .patch(cartsUrl, {
@@ -58,10 +61,12 @@ producList.addEventListener("click", (e) => {
         // console.log(patchRes);
         alertInfo(`${findCartData.product.title} 數量加1`, "alert-success");
         getCartData();
+        e.target.classList.remove("disabled");
       })
       .catch((err) => {
         // console.log(err);
         alertInfo("請稍後再試", "alert-danger");
+        e.target.classList.remove("disabled");
       });
   } else {
     axios
@@ -75,10 +80,12 @@ producList.addEventListener("click", (e) => {
         // console.log(postRes);
         alertInfo("已成功加入購物車", "alert-success");
         getCartData();
+        e.target.classList.remove("disabled");
       })
       .catch((err) => {
         // console.log(err);
         alertInfo("請稍後再試", "alert-danger");
+        e.target.classList.remove("disabled");
       });
   }
 });
@@ -89,47 +96,54 @@ cartList.addEventListener("click", (e) => {
   if (!cartProductId) {
     return;
   }
-  alertWait("正為您處理購物車");
+  e.target.classList.add("disabled");
+  loading("正為您處理購物車");
   axios
     .delete(cartsUrl + "/" + cartProductId)
     .then((delRes) => {
       // console.log(delRes.data);
       alertInfo(`已刪除品項`, "alert-success");
       getCartData();
+      // e.target.classList.remove("disabled");
     })
     .catch((err) => {
       // console.log(err);
       alertInfo(`請稍後再試`, "alert-danger");
+      e.target.classList.remove("disabled");
     });
 });
 
-discardAllBtn.addEventListener("click", (e) => {
+discartAllBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (cartData.length === 0) {
     alertInfo("購物車已經是空的了", "alert-danger");
-    // debounceAlert();
     return;
   }
-  alertWait("正為您處理購物車");
+  loading("正為您處理購物車");
+  e.target.classList.add("disabled");
   axios
     .delete(cartsUrl)
     .then((delRes) => {
       // console.log(delRes.data);
       alertInfo("已清空購物車", "alert-success");
       getCartData();
+      e.target.classList.remove("disabled");
     })
     .catch((err) => {
       // console.log(err);
       alertInfo("請稍後再試", "alert-danger");
+      e.target.classList.remove("disabled");
     });
 });
 
 orderInfo.addEventListener("submit", (e) => {
   e.preventDefault();
+  console.dir(e.target);
   if (cartData.length === 0) {
     alertInfo("請加入購物車", "alert-danger");
     return;
   }
+
   const customerName = document.querySelector("#customerName").value;
   const customerPhone = document.querySelector("#customerPhone").value;
   const customerEmail = document.querySelector("#customerEmail").value;
@@ -153,7 +167,8 @@ orderInfo.addEventListener("submit", (e) => {
     alertInfo("請填寫09開頭共10位數字", "alert-danger");
     return;
   }
-  alertWait("正為您處理訂單");
+  loading("正為您處理訂單");
+  e.target[5].disabled = true;
   axios
     .post(ordersUrl, {
       data: {
@@ -171,9 +186,11 @@ orderInfo.addEventListener("submit", (e) => {
       e.target.reset();
       alertInfo("訂單建立成功", "alert-success");
       getCartData();
+      e.target[5].disabled = false;
     })
     .catch((err) => {
       // console.log(err);
       alertInfo("很抱歉，請再重新操作一次", "alert-danger");
+      e.target[5].disabled = false;
     });
 });

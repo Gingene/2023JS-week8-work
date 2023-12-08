@@ -1,5 +1,5 @@
 import { token, baseUrl2 } from "../api/config.js";
-import { alertInfo, alertWait } from "../utils/alert.js";
+import { alertInfo, loading } from "../utils/alert.js";
 import c3DrawPie from "./c3data.js";
 
 const orderUrl = `${baseUrl2}/orders`;
@@ -9,7 +9,7 @@ const discardAllBtn = document.querySelector(".discardAllBtn");
 
 let orderData = [];
 
-alertWait("讀取資料中請稍後");
+loading("讀取資料中請稍後");
 function getOrdersData() {
   axios
     .get(orderUrl, {
@@ -73,7 +73,7 @@ function rednerOrderList(dataArray) {
 
 function changeOrderStatus(orderId) {
   const result = orderData.find((item) => item.id === orderId);
-  alertWait("更新資料中請稍後");
+  loading("更新資料中請稍後");
   axios
     .put(
       orderUrl,
@@ -100,7 +100,7 @@ function changeOrderStatus(orderId) {
 }
 
 function deleteOrder(orderId) {
-  alertWait("更新資料中請稍後");
+  loading("更新資料中請稍後");
   axios
     .delete(`${orderUrl}/${orderId}`, {
       headers: {
@@ -123,7 +123,7 @@ function deleteAllOrders() {
     alertInfo(`目前訂單已經是空的了`, "alert-danger");
     return;
   }
-  alertWait("更新資料中請稍後");
+  loading("更新資料中請稍後");
   axios
     .delete(orderUrl, {
       headers: {

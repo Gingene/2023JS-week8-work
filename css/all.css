@@ -835,6 +835,12 @@ body {
   border-radius: 5px;
 }
 
+.orderInfo-btn:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: default;
+}
+
 .orderInfo-btn:hover {
   background-color: #301e5f;
 }
@@ -951,10 +957,42 @@ body {
   text-align: center;
 }
 
-.alert-wait {
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.loading-window {
   color: #055160;
   background-color: #cff4fc;
   border-color: #b6effb;
+  width: 80%;
+  padding: 1.5rem;
+}
+
+.loading-window p {
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .alert-success {
@@ -967,6 +1005,12 @@ body {
   color: #842029;
   background-color: #f8d7da;
   border-color: #f5c2c7;
+}
+
+a.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: default;
 }
 
 .d-none {

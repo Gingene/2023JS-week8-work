@@ -5,7 +5,7 @@ const cartsUrl = `${baseUrl}/carts`;
 let cartData = [];
 
 const cartList = document.querySelector(".shopping-cartList");
-const discardAllBtn = document.querySelector(".discardAllBtn");
+const discartAllBtn = document.querySelector(".discardAllBtn");
 
 function renderCartList(dataList, totalPrice) {
   document.querySelector("#cartTotalPrice").textContent =
@@ -36,10 +36,15 @@ function renderCartList(dataList, totalPrice) {
 }
 
 function getCartData() {
-  axios.get(cartsUrl).then((res) => {
-    cartData = res.data.carts;
-    renderCartList(cartData, res.data.finalTotal);
-  });
+  axios
+    .get(cartsUrl)
+    .then((res) => {
+      cartData = res.data.carts;
+      renderCartList(cartData, res.data.finalTotal);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
-export { cartsUrl, cartData, cartList, discardAllBtn, getCartData };
+export { cartsUrl, cartData, cartList, discartAllBtn, getCartData };
